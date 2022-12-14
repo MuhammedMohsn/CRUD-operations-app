@@ -11,6 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 function App(props) {
   let classes = useStyles(props);
+  // loading state to wait until getting existing products from local storage
   let [loading,setLoading] = useState(true)
   // state for info of product
   let [infoProduct, setInfoProduct] = useState({
