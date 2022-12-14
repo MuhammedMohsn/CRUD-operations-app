@@ -11,6 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 function App(props) {
   let classes = useStyles(props);
+  let [loading,setLoading] = useState(true)
   // state for info of product
   let [infoProduct, setInfoProduct] = useState({
     nameProduct: '', priceProduct: '',
@@ -46,6 +47,7 @@ function App(props) {
   }
 // to get the products from local storage (like save settings) when the component is mounted
   useEffect(() => {
+    setLoading(false)
     if (localStorage.getItem("products")) {
       setAllProduct(JSON.parse(localStorage.getItem("products")))
     }
@@ -100,6 +102,7 @@ function App(props) {
     setAllProduct([...allProduct,infoProduct])
     clearInputs()
   }
+  if(loading){return <div>loading.........</div>}
   return (
     <Fragment>
       <Box className={classes.box} >
