@@ -61,7 +61,9 @@ function App(props) {
   }, [allProduct])
   useEffect(() => {
     if(inputSearch===""){
-      setAllProduct([...JSON.parse(localStorage.getItem("products"))])
+      if(localStorage.getItem("products")){
+        setAllProduct([...JSON.parse(localStorage.getItem("products"))])
+      }
     }
     else{
       let items = allProduct.filter(ele => { return ele.nameProduct.toLowerCase().includes(inputSearch.toLowerCase()) })
