@@ -10,15 +10,17 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function App(props) {
-
   let classes = useStyles(props);
-  // all states 
+  // state for info of product
   let [infoProduct, setInfoProduct] = useState({
     nameProduct: '', priceProduct: '',
     categoryProduct: '', descriptionProduct: ''});
+  // state for products
   let [allProduct, setAllProduct] = useState([]);
+  // states related to input search
   let [inputSearch, setInputSearch] = useState("");
   let [searchedItems, setSearchedItems] = useState([])
+  // state for show/hide update button
   let [showUpdateProduct, setShowUpdateProduct] = useState(false)
   //destructing product info
   let { nameProduct, priceProduct, categoryProduct, descriptionProduct } = infoProduct
@@ -33,7 +35,7 @@ function App(props) {
     setInfoProduct({ ...infoProduct, [e.target.name]: e.target.value })}
 
   let add = (e) => {
-    if (nameProduct == "" && priceProduct == "" && categoryProduct == "" && descriptionProduct == "") {
+    if (nameProduct === "" && priceProduct === "" && categoryProduct === "" && descriptionProduct == "") {
       alert("Please fill all inputs")
     }
     else {
@@ -54,18 +56,18 @@ function App(props) {
       localStorage.setItem("products", JSON.stringify(allProduct))
     }
   }, [allProduct])
-
-  let search = (e) => {
-    setInputSearch(e.target.value)
-    if (e.target.value=="") {
-      setSearchedItems([])
+  useEffect(() => {
+    if(inputSearch===""){
       setAllProduct([...JSON.parse(localStorage.getItem("products"))])
     }
-    else {
-      let items = allProduct.filter(ele => { return ele.nameProduct.toLowerCase().includes(e.target.value.toLowerCase()) })
-      if(items.length > 0){ setSearchedItems(items) ; setAllProduct([])}
-      else{ setSearchedItems([]);setAllProduct(allProduct)}
+    else{
+      let items = allProduct.filter(ele => { return ele.nameProduct.toLowerCase().includes(inputSearch.toLowerCase()) })
+      if(items.length > 0){ setSearchedItems(items) ;}
+      else{ setSearchedItems([]);setAllProduct([])}
     }
+  },[inputSearch])
+  let search = (e) => {
+    setInputSearch(e.target.value)
   }
 
   let deleteFunc = (index) => {
@@ -80,12 +82,14 @@ function App(props) {
   
 
   let getInfoAboutItem = (index) => {
+    // show update button
     setShowUpdateProduct(true)
     let items=JSON.parse(localStorage.getItem("products"))
     let item=items[index]
     setInfoProduct({...infoProduct,
       nameProduct: item.nameProduct, priceProduct: item.priceProduct, categoryProduct: item.categoryProduct, descriptionProduct:item.descriptionProduct
     })
+    // to remove the item which we need to update from products.
     let newArr = allProduct.slice(0, index).concat(allProduct.slice(index + 1))
     setAllProduct(newArr)
 }
