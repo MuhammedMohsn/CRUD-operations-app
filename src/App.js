@@ -48,10 +48,10 @@ function App(props) {
   }
 // to get the products from local storage (like save settings) when the component is mounted
   useEffect(() => {
-    setLoading(false)
     if (localStorage.getItem("products")) {
       setAllProduct(JSON.parse(localStorage.getItem("products")))
     }
+    setLoading(false)
   }, [])
 // to set products in local storage after every change in allproduct
   useEffect(() => {
